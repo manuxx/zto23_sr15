@@ -61,9 +61,16 @@ namespace Training.Specificaton
             subject.AllPets().ShouldContain(pet);
 
         static Pet pet;
+<<<<<<< HEAD
     }
 
     public class when_adding_an_existing_pet_again_ : pet_shop_concern
+=======
+    }
+
+
+	public class when_adding_an_existing_pet_again_ : pet_shop_concern
+>>>>>>> 5cd8c7a02841fb3d9ea0f71c22947862932c2898
     {
         Establish context = () =>
         {
@@ -78,9 +85,16 @@ namespace Training.Specificaton
             subject.AllPets().CountItems().ShouldEqual(1);
 
         private static Pet pet;
+<<<<<<< HEAD
     }
 
     public class when_adding_a_new_pet_with_existing_name_ : pet_shop_concern
+=======
+    }
+
+
+	public class when_adding_a_new_pet_with_existing_name_ : pet_shop_concern
+>>>>>>> 5cd8c7a02841fb3d9ea0f71c22947862932c2898
     {
         Establish context = () =>
         {
@@ -97,4 +111,19 @@ namespace Training.Specificaton
         private static Pet fluffy_the_first;
         private static Pet fluffy_the_second;
     }
+
+    [Subject(typeof(PetShop))]
+    class when_trying_to_change_returned_collection_of_pets : pet_shop_concern
+    {
+        Establish c = () => pet_initial_content.AddManyItems(new Pet { name = "Pixie" }, new Pet { name = "Dixie" });
+        Because b = () =>
+        {
+            IEnumerable<Pet> returned_pets = subject.AllPets();
+            exception = Catch.Exception(() => { var x = (ICollection<Pet>)returned_pets; });
+        };
+        private static IEnumerable<Pet> returned_collection_of_pets;
+        private static Exception exception;
+        It invalid_cast_exception_should_be_thrown = () => exception.ShouldBeOfExactType<InvalidCastException>();
+    }
+
 }

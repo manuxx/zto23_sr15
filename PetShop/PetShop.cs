@@ -24,6 +24,7 @@ namespace Training.DomainClasses
             {
                 _petsInTheStore.Add(newPet);
             }
+            _petsInTheStore.Add(newPet);
         }
     }
 }
