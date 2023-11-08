@@ -61,16 +61,10 @@ namespace Training.Specificaton
             subject.AllPets().ShouldContain(pet);
 
         static Pet pet;
-<<<<<<< HEAD
     }
+
 
     public class when_adding_an_existing_pet_again_ : pet_shop_concern
-=======
-    }
-
-
-	public class when_adding_an_existing_pet_again_ : pet_shop_concern
->>>>>>> 5cd8c7a02841fb3d9ea0f71c22947862932c2898
     {
         Establish context = () =>
         {
@@ -85,16 +79,10 @@ namespace Training.Specificaton
             subject.AllPets().CountItems().ShouldEqual(1);
 
         private static Pet pet;
-<<<<<<< HEAD
     }
+
 
     public class when_adding_a_new_pet_with_existing_name_ : pet_shop_concern
-=======
-    }
-
-
-	public class when_adding_a_new_pet_with_existing_name_ : pet_shop_concern
->>>>>>> 5cd8c7a02841fb3d9ea0f71c22947862932c2898
     {
         Establish context = () =>
         {
