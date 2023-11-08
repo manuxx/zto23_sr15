@@ -16,6 +16,7 @@ namespace Training.DomainClasses
         {
             foreach (var pet in _petsInTheStore)
                 yield return pet;
+
         }
 
         private Boolean IsAlredyAdded(string petName)
