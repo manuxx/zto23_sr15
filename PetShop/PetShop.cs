@@ -14,7 +14,10 @@ namespace Training.DomainClasses
 
         public IEnumerable<Pet> AllPets()
         {
-            return _petsInTheStore;
+            foreach (var pet in _petsInTheStore) //ten kod to œciema, tak naprawde nie iterujemy po 
+            {
+                yield return pet; //zrob nowy iterator, to jest na niego przepis, i zwróæ
+            }
         }
 
         public void Add(Pet newPet)
