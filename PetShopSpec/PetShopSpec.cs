@@ -52,7 +52,7 @@ namespace Training.Specificaton
         static IEnumerable<Pet> pets_in_shop;
     }
 
-    public class when_adding_a_new_pet : pet_shop_concern
+    public class when_adding_a_new_pet : pet_shop_concern //zrobic jako 1
     {
         Establish context = () => pet = new Pet();
         Because of = () => subject.Add(pet);
@@ -63,8 +63,7 @@ namespace Training.Specificaton
         static Pet pet;
     }
 
-	[Ignore("Will be implemented 2'nd")]
-	public class when_adding_an_existing_pet_again_ : pet_shop_concern
+	public class when_adding_an_existing_pet_again_ : pet_shop_concern //jako 2
     {
         Establish context = () =>
         {
@@ -81,8 +80,7 @@ namespace Training.Specificaton
         private static Pet pet;
     }
 
-	[Ignore("Will be implemented 3'rd")]
-	public class when_adding_a_new_pet_with_existing_name_ : pet_shop_concern
+	public class when_adding_a_new_pet_with_existing_name_ : pet_shop_concern //jako 3
     {
         Establish context = () =>
         {
