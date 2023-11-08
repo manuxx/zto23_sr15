@@ -21,12 +21,12 @@ namespace Training.DomainClasses
         {
             foreach (var pet in _petsInTheStore)
             {
-                if (pet.name == newPet.name)
+                if (newPet.name==pet.name)
+      
                     return;
+   
             }
-
-            if (!_petsInTheStore.Contains(newPet))
-                _petsInTheStore.Add(newPet);
+            _petsInTheStore.Add(newPet);
         }
     }
 }
