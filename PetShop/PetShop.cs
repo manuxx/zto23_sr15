@@ -19,14 +19,19 @@ namespace Training.DomainClasses
 
         public void Add(Pet newPet)
         {
-            foreach (var pet in _petsInTheStore)
+            bool containsClone = _petsInTheStore.Contains(newPet);
+            bool containsName = false;
+            foreach (Pet pet in _petsInTheStore)
             {
-                if (newPet.name==pet.name)
-      
-                    return;
-   
+                if (pet.name == newPet.name)
+                {
+                    containsName = true;
+                }
             }
-            _petsInTheStore.Add(newPet);
+            if (!containsClone && !containsName)
+            {
+                _petsInTheStore.Add(newPet);
+            }
         }
     }
 }
