@@ -56,14 +56,13 @@ namespace Training.Specificaton
     {
         Establish context = () => pet = new Pet();
         Because of = () => subject.Add(pet);
-
+        
         It should_store_a_new_pet_in_the_shop = () =>
             subject.AllPets().ShouldContain(pet);
 
         static Pet pet;
     }
 
-	[Ignore("Will be implemented 2'nd")]
 	public class when_adding_an_existing_pet_again_ : pet_shop_concern
     {
         Establish context = () =>
@@ -81,7 +80,7 @@ namespace Training.Specificaton
         private static Pet pet;
     }
 
-	[Ignore("Will be implemented 3'rd")]
+	
 	public class when_adding_a_new_pet_with_existing_name_ : pet_shop_concern
     {
         Establish context = () =>
