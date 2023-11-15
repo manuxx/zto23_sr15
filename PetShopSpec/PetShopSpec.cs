@@ -10,18 +10,18 @@ namespace Training.Specificaton
     {
         Establish context = () =>
         {
-            pet_initial_content = new List<Pet>();
+            pet_initial_content = new List<TIem>();
             ProvideBasicConstructorArgument(pet_initial_content);
         };
 
-        protected static IList<Pet> pet_initial_content;
+        protected static IList<TIem> pet_initial_content;
     }
 
     public class when_counting_pets_in_the_shop : pet_shop_concern
     {
         Establish context = () =>
         {
-            pet_initial_content.AddManyItems(new Pet(), new Pet());
+            pet_initial_content.AddManyItems(new TIem(), new TIem());
         };
         Because of = () =>
         {
@@ -37,30 +37,30 @@ namespace Training.Specificaton
     {
         Establish context = () =>
         {
-            first_pet = new Pet();
-            second_pet = new Pet();
-            pet_initial_content.AddManyItems(first_pet, second_pet);
+            _firstIem = new TIem();
+            _secondIem = new TIem();
+            pet_initial_content.AddManyItems(_firstIem, _secondIem);
         };
 
         Because of = () => pets_in_shop = subject.AllPets();
 
         It should_return_all_the_pets_in_the_shop = () =>
-            pet_initial_content.ShouldContainOnly(first_pet, second_pet);
+            pet_initial_content.ShouldContainOnly(_firstIem, _secondIem);
 
-        static Pet first_pet;
-        static Pet second_pet;
-        static IEnumerable<Pet> pets_in_shop;
+        static TIem _firstIem;
+        static TIem _secondIem;
+        static IEnumerable<TIem> pets_in_shop;
     }
 
     public class when_adding_a_new_pet : pet_shop_concern
     {
-        Establish context = () => pet = new Pet();
-        Because of = () => subject.Add(pet);
+        Establish context = () => _iem = new TIem();
+        Because of = () => subject.Add(_iem);
 
         It should_store_a_new_pet_in_the_shop = () =>
-            subject.AllPets().ShouldContain(pet);
+            subject.AllPets().ShouldContain(_iem);
 
-        static Pet pet;
+        static TIem _iem;
     }
 
 
@@ -68,17 +68,17 @@ namespace Training.Specificaton
     {
         Establish context = () =>
         {
-            pet = new Pet();
-            pet_initial_content.Add(pet);
+            _iem = new TIem();
+            pet_initial_content.Add(_iem);
         };
 
         Because of = () =>
-            subject.Add(pet);
+            subject.Add(_iem);
 
         It should_store_a_pet_in_the_shop_once = () =>
             subject.AllPets().CountItems().ShouldEqual(1);
 
-        private static Pet pet;
+        private static TIem _iem;
     }
 
 
@@ -86,8 +86,8 @@ namespace Training.Specificaton
     {
         Establish context = () =>
         {
-            fluffy_the_first = new Pet { name = "Fluffy" };
-            fluffy_the_second = new Pet { name = "Fluffy" };
+            fluffy_the_first = new TIem { name = "Fluffy" };
+            fluffy_the_second = new TIem { name = "Fluffy" };
             pet_initial_content.Add(fluffy_the_first);
         };
 
@@ -96,20 +96,20 @@ namespace Training.Specificaton
         It should_contain_only_one_pet_of_the_name_in_the_store = () =>
             subject.AllPets().CountItems().ShouldEqual(1);
 
-        private static Pet fluffy_the_first;
-        private static Pet fluffy_the_second;
+        private static TIem fluffy_the_first;
+        private static TIem fluffy_the_second;
     }
 
     [Subject(typeof(PetShop))]
     class when_trying_to_change_returned_collection_of_pets : pet_shop_concern
     {
-        Establish c = () => pet_initial_content.AddManyItems(new Pet { name = "Pixie" }, new Pet { name = "Dixie" });
+        Establish c = () => pet_initial_content.AddManyItems(new TIem { name = "Pixie" }, new TIem { name = "Dixie" });
         Because b = () =>
         {
-            IEnumerable<Pet> returned_pets = subject.AllPets();
-            exception = Catch.Exception(() => { var x = (ICollection<Pet>)returned_pets; });
+            IEnumerable<TIem> returned_pets = subject.AllPets();
+            exception = Catch.Exception(() => { var x = (ICollection<TIem>)returned_pets; });
         };
-        private static IEnumerable<Pet> returned_collection_of_pets;
+        private static IEnumerable<TIem> returned_collection_of_pets;
         private static Exception exception;
         It invalid_cast_exception_should_be_thrown = () => exception.ShouldBeOfExactType<InvalidCastException>();
     }
