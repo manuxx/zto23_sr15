@@ -6,43 +6,43 @@ namespace Training.DomainClasses
 {
     public class PetShop
     {
-        private IList<TIem> _petsInTheStore;
+        private IList<Pet> _petsInTheStore;
 
-        public PetShop(IList<TIem> petsInTheStore)
+        public PetShop(IList<Pet> petsInTheStore)
         {
             this._petsInTheStore = petsInTheStore;
         }
 
-        public IEnumerable<TIem> AllPets()
+        public IEnumerable<Pet> AllPets()
         {
-            return new ReadOnly(_petsInTheStore);
+            return new ReadOnly<Pet>(_petsInTheStore);
         }
 
-        public void Add(TIem newIem)
+        public void Add(Pet newPet)
         {
             foreach (var pet in _petsInTheStore)
             {
-                if (newIem.name==pet.name)
+                if (newPet.name==pet.name)
       
                     return;
    
             }
-            _petsInTheStore.Add(newIem);
+            _petsInTheStore.Add(newPet);
         }
     }
 
-    public class ReadOnly<TItem> : IEnumerable<TIem>
+    public class ReadOnly<TItem> : IEnumerable<TItem>
     {
-        private readonly IEnumerable<TIem> items;
+        private readonly IEnumerable<TItem> _items;
 
-        public ReadOnly(IEnumerable<TIem> items)
+        public ReadOnly(IEnumerable<TItem> items)
         {
-            items = items;
+            _items = items;
         }
 
-        public IEnumerator<TIem> GetEnumerator()
+        public IEnumerator<TItem> GetEnumerator()
         {
-            return items.GetEnumerator();
+            return _items.GetEnumerator();
         }
 
         IEnumerator IEnumerable.GetEnumerator()
