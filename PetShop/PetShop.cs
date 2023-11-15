@@ -50,9 +50,14 @@ namespace Training.DomainClasses
 
         public IEnumerable<Pet> AllMice()
         {
+            return Filter(pet => pet.species == Species.Mouse);
+        }
+
+        private IEnumerable<Pet> Filter(Func<Pet, bool> condition)
+        {
             foreach (var pet in _petsInTheStore)
             {
-                if (pet.species == Species.Mouse)
+                if (condition(pet))
                 {
                     yield return pet;
                 }
@@ -61,79 +66,37 @@ namespace Training.DomainClasses
 
         public IEnumerable<Pet> AllCatsOrDogs()
         {
-            foreach (var pet in _petsInTheStore)
-            {
-                if (pet.species == Species.Cat || pet.species == Species.Dog)
-                {
-                    yield return pet;
-                }
-            }
+            return Filter(pet => pet.species == Species.Cat || pet.species == Species.Dog);
         }
 
         public IEnumerable<Pet> AllFemalePets()
         {
-            foreach (var pet in _petsInTheStore)
-            {
-                if (pet.sex == Sex.Female)
-                {
-                    yield return pet;
-                }
-            }
+           return Filter(pet => pet.sex == Sex.Female);
         }
 
         public IEnumerable<Pet> AllPetsBornAfter2010()
         {
-            foreach (var pet in _petsInTheStore)
-            {
-                if (pet.yearOfBirth > 2010)
-                {
-                    yield return pet;
-                }
-            }
+            return Filter(pet => pet.yearOfBirth > 2010);
         }
 
         public IEnumerable<Pet> AllDogsBornAfter2010()
         {
-            foreach (var pet in _petsInTheStore)
-            {
-                if (pet.yearOfBirth > 2010 && pet.species == Species.Dog)
-                {
-                    yield return pet;
-                }
-            }
+            return Filter(pet => pet.yearOfBirth > 2010 && pet.species == Species.Dog);
         }
 
         public IEnumerable<Pet> AllPetsButNotMice()
         {
-            foreach (var pet in _petsInTheStore)
-            {
-                if (pet.species != Species.Mouse)
-                {
-                    yield return pet;
-                }
-            }
+            return Filter(pet => pet.species != Species.Mouse);
         }
 
         public IEnumerable<Pet> AllMaleDogs()
         {
-            foreach (var pet in _petsInTheStore)
-            {
-                if (pet.species == Species.Dog && pet.sex == Sex.Male)
-                {
-                    yield return pet;
-                }
-            }
+            return Filter(pet => pet.species == Species.Dog && pet.sex == Sex.Male);
         }
 
         public IEnumerable<Pet> AllPetsBornAfter2011OrRabbits()
         {
-            foreach (var pet in _petsInTheStore)
-            {
-                if (pet.yearOfBirth > 2011 || pet.species == Species.Rabbit)
-                {
-                    yield return pet;
-                }
-            }
+            return Filter(pet => pet.yearOfBirth > 2011 || pet.species == Species.Rabbit);
         }
     }
 
