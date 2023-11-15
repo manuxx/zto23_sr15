@@ -29,6 +29,26 @@ namespace Training.DomainClasses
             }
             _petsInTheStore.Add(newPet);
         }
+
+        public IEnumerable<Pet> AllCats()
+        {
+            var cats = new List<Pet>();
+            foreach (var pet in _petsInTheStore)
+            {
+                if (pet.species == Species.Cat)
+                {
+                    yield return pet;
+                }
+
+            }
+        }
+
+        public IEnumerable<Pet> AllPetsSortedByName()
+        {
+            var ret = new List<Pet>(_petsInTheStore);
+            ret.Sort((a, b) => (a.name.CompareTo(b.name)));
+            return ret;
+        }
     }
 
     public class ReadOnly<TItem> : IEnumerable<TItem>
