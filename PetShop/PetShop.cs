@@ -30,7 +30,7 @@ namespace Training.DomainClasses
         {
             var result = new List<Pet>(_petsInTheStore);
             result.Sort((p1, p2) => p1.name.CompareTo(p2.name));
-            return result;
+            return new ReadOnly<Pet>(result);
         }
 
         public void Add(Pet newPet)
