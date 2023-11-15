@@ -1,6 +1,5 @@
 using System.Collections.Generic;
-
-namespace Training.DomainClasses;
+using Training.DomainClasses;
 
 public static class EnumUtilities
 {
