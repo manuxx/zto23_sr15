@@ -47,6 +47,57 @@ namespace Training.DomainClasses
             ret.Sort((p1,p2)=>p1.name.CompareTo(p2.name));
             return ret;
         }
+
+        public IEnumerable<Pet> GenerateEnumerable(IList<Pet> items, Func<Pet, bool> cond)
+        {
+            foreach (Pet pet in items)
+            {
+                if (cond(pet))
+                {
+                    yield return pet;
+                }
+            }
+        }
+
+        public IEnumerable<Pet> AllMice()
+        {
+            return GenerateEnumerable(_petsInTheStore, (p1) => p1.species == Species.Mouse);
+        }
+
+        public IEnumerable<Pet> AllFemalePets()
+        {
+            return GenerateEnumerable(_petsInTheStore, (p1) => p1.sex == Sex.Female);
+        }
+
+        public IEnumerable<Pet> AllCatsOrDogs()
+        {
+            return GenerateEnumerable(_petsInTheStore, (p1) => p1.species == Species.Dog || p1.species == Species.Cat);
+        }
+
+        public IEnumerable<Pet> AllPetsButNotMice()
+        {
+            return GenerateEnumerable(_petsInTheStore, (p1) => p1.species != Species.Mouse);
+        }
+
+        public IEnumerable<Pet> AllPetsBornAfter2010()
+        {
+            return GenerateEnumerable(_petsInTheStore, (p1) => p1.yearOfBirth > 2010);
+        }
+
+        public IEnumerable<Pet> AllDogsBornAfter2010()
+        {
+            return GenerateEnumerable(_petsInTheStore, (p1) => p1.yearOfBirth > 2010 && p1.species == Species.Dog);
+        }
+
+        public IEnumerable<Pet> AllMaleDogs()
+        {
+            return GenerateEnumerable(_petsInTheStore, (p1) => p1.sex == Sex.Male && p1.species == Species.Dog);
+        }
+
+        public IEnumerable<Pet> AllPetsBornAfter2011OrRabbits()
+        {
+            return GenerateEnumerable(_petsInTheStore, (p1) => p1.yearOfBirth > 2011 || p1.species == Species.Rabbit);
+        }
     }
 
     public class ReadOnly<TItem> : IEnumerable<TItem>
