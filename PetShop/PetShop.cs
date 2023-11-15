@@ -12,7 +12,23 @@ namespace Training.DomainClasses
         {
             this._petsInTheStore = petsInTheStore;
         }
+        public IEnumerable<Pet> AllCats()
+        {
+            foreach (var pet in _petsInTheStore)
+            {
+                if (pet.species == Species.Cat)
+                {
+                    yield return pet;
+                }
+            }
+        }
 
+        public IEnumerable<Pet> AllPetsSortedByName()
+        {
+            var ret = new List<Pet>(_petsInTheStore);
+            ret.Sort((p1,p2)=>p1.name.CompareTo(p2.name));
+            return ret;
+        }
         public IEnumerable<Pet> AllPets()
         {
             return new ReadOnly<Pet>(_petsInTheStore);
