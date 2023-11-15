@@ -32,17 +32,17 @@ namespace Training.DomainClasses
         }
     }
 
-    public class ReadOnly : IEnumerable<Pet>
+    public class ReadOnly<TItem> : IEnumerable<TItem>
     {
-        private readonly IEnumerable<Pet> _pets;
-        public ReadOnly(IEnumerable<Pet> pets)
+        private readonly IEnumerable<TItem> _items;
+        public ReadOnly(IEnumerable<TItem> items)
         {
-            _pets = pets;
+            _items = items;
         }
 
-        public IEnumerator<Pet> GetEnumerator()
+        public IEnumerator<TItem> GetEnumerator()
         {
-            return _pets.GetEnumerator();
+            return _items.GetEnumerator();
         }
 
         IEnumerator IEnumerable.GetEnumerator()
