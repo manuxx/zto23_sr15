@@ -14,9 +14,7 @@ namespace Training.DomainClasses
 
         public IEnumerable<Pet> AllPets()
         {
-            foreach (var pet in _petsInTheStore)
-                yield return pet;
-
+            return EnumUtilities.OneAtATime(_petsInTheStore);    
         }
 
         private Boolean IsAlredyAdded(string petName)
@@ -30,6 +28,7 @@ namespace Training.DomainClasses
             }
             return false;
         }
+
 
         public void Add(Pet newPet)
         {
