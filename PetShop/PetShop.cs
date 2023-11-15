@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 
 namespace Training.DomainClasses
@@ -11,13 +12,9 @@ namespace Training.DomainClasses
         {
             this._petsInTheStore = petsInTheStore;
         }
-
         public IEnumerable<Pet> AllPets()
         {
-            foreach (var pet in _petsInTheStore)
-            {
-                yield return pet;
-            }
+            return new ReadOnly<Pet>(_petsInTheStore);
         }
 
         public void Add(Pet newPet)
@@ -32,4 +29,23 @@ namespace Training.DomainClasses
             _petsInTheStore.Add(newPet);
         }
     }
+	public class ReadOnly<TElement> : IEnumerable<TElement>
+	{
+        private readonly IEnumerable<TElement> pets;
+        public ReadOnly(IEnumerable<TElement> pets1)
+        {
+            this.pets = pets1;
+        }
+
+        public IEnumerator<TElement> GetEnumerator()
+        {
+           return pets.GetEnumerator();
+        }
+
+        IEnumerator IEnumerable.GetEnumerator()
+        {
+            return GetEnumerator();
+        }
+	}
+
 }
