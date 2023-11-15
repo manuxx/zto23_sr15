@@ -14,10 +14,7 @@ namespace Training.DomainClasses
 
         public IEnumerable<Pet> AllPets()
         {
-            foreach (var pet in _petsInTheStore)
-            {
-                yield return pet;
-            }
+            return EnumeratorUtil.YieldAll(_petsInTheStore);
         }
 
         public void Add(Pet newPet)
