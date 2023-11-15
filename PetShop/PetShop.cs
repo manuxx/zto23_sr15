@@ -42,7 +42,7 @@ namespace Training.DomainClasses
 
         public IEnumerator<Pet> GetEnumerator()
         {
-            throw new NotImplementedException();
+            return _pets.GetEnumerator();
         }
 
         IEnumerator IEnumerable.GetEnumerator()
