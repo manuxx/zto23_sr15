@@ -15,7 +15,7 @@ namespace Training.DomainClasses
         {
             foreach (var item in items)
             {
-                if (criteria.IsSatisifedBy(item))
+                if (criteria.IsSatisifedBy<TItem>(item))
                 {
                     yield return item;
                 }
@@ -31,7 +31,7 @@ namespace Training.DomainClasses
             _condition = condition;
         }
 
-        public bool IsSatisifedBy<T>(T item)
+        public bool IsSatisifedBy<TItem>(T item)
         {
             return _condition(item);
         }
@@ -39,6 +39,6 @@ namespace Training.DomainClasses
 
     public interface Criteria<T>
     {
-        public bool IsSatisifedBy<T>(T item);
+        public bool IsSatisifedBy<TItem>(T item);
     }
 }
