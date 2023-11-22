@@ -7,13 +7,38 @@ namespace Training.DomainClasses
     {
         public static IEnumerable<TItem> ThatSatisfy<TItem>(this IEnumerable<TItem> items, Predicate<TItem> condition)
         {
+            Criteria<TItem> adapter = new AnonymousCriteria<TItem>(condition);
+            return items.ThatSatisfy(adapter);
+        }
+
+        public static IEnumerable<TItem> ThatSatisfy<TItem>(this IEnumerable<TItem> items, Criteria<TItem> criteria)
+        {
             foreach (var item in items)
             {
-                if (condition(item))
+                if (criteria.IsSatisifedBy(item))
                 {
                     yield return item;
                 }
             }
         }
+    }
+
+    public class AnonymousCriteria<T> : Criteria<T>
+    {
+        Predicate<T> _condition;
+        public AnonymousCriteria(Predicate<T> condition)
+        {
+            _condition = condition;
+        }
+
+        public bool IsSatisifedBy<T>(T item)
+        {
+            return _condition(item);
+        }
+    }
+
+    public interface Criteria<T>
+    {
+        public bool IsSatisifedBy<T>(T item);
     }
 }
