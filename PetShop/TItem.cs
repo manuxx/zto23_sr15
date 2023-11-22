@@ -2,7 +2,7 @@ using System;
 
 namespace Training.DomainClasses
 {
-    public class Pet 
+    public class TItem 
     {
         public Sex sex;
         public string name { get; set; }
