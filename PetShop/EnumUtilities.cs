@@ -41,4 +41,19 @@ namespace Training.DomainClasses
     {
         public bool IsSatisifedBy<TItem>(T item);
     }
+
+    public class IsBornAfterCriteria : Criteria<Pet>
+    {
+        int _year;
+
+        public IsBornAfterCriteria(int year)
+        {
+            _year = year;
+        }
+
+        public bool IsSatisifedBy<TItem>(Pet item)
+        {
+            return item.yearOfBirth > _year;
+        }
+    }
 }
