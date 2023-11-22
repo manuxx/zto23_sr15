@@ -28,21 +28,3 @@ public static class EnumUtilities
         }
     }
 }
-
-public class AnonymousCriteria<T> : Criteria<T>
-{
-    public AnonymousCriteria(Predicate<T> condition)
-    {
-        throw new NotImplementedException();
-    }
-
-    public bool IsSatisfiedBy(T item)
-    {
-        throw new NotImplementedException();
-    }
-}
-
-public interface Criteria<T>
-{
-    bool IsSatisfiedBy(T item);
-}
