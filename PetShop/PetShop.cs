@@ -6,19 +6,19 @@ namespace Training.DomainClasses
 {
     public class PetShop
     {
-        private IList<TItem> _petsInTheStore;
+        private IList<Pet> _petsInTheStore;
 
-        public PetShop(IList<TItem> petsInTheStore)
+        public PetShop(IList<Pet> petsInTheStore)
         {
             this._petsInTheStore = petsInTheStore;
         }
 
-        public IEnumerable<TItem> AllPets()
+        public IEnumerable<Pet> AllPets()
         {
-            return new ReadOnly<TItem>(_petsInTheStore);
+            return new ReadOnly<Pet>(_petsInTheStore);
         }
 
-        public void Add(TItem newItem)
+        public void Add(Pet newItem)
         {
             foreach (var pet in _petsInTheStore)
             {
@@ -28,75 +28,75 @@ namespace Training.DomainClasses
             _petsInTheStore.Add(newItem);
         }
 
-        public IEnumerable<TItem> AllCats()
+        public IEnumerable<Pet> AllCats()
         {
             return _petsInTheStore.Filter((IsACat));
         }
 
-        private bool IsACat(TItem pet)
+        private bool IsACat(Pet item)
         {
-	        return pet.species == Species.Cat;
+	        return item.species == Species.Cat;
         }
 
 
-        public IEnumerable<TItem> AllPetsSortedByName()
+        public IEnumerable<Pet> AllPetsSortedByName()
         {
-            var ret = new List<TItem>(_petsInTheStore);
+            var ret = new List<Pet>(_petsInTheStore);
             ret.Sort((p1,p2)=>p1.name.CompareTo(p2.name));
             return ret;
         }
 
-        public IEnumerable<TItem> AllMice()
+        public IEnumerable<Pet> AllMice()
         {
             return _petsInTheStore.Filter(IsMice());
         }
 
-        private static Predicate<TItem> IsMice()
+        private static Predicate<Pet> IsMice()
         {
 	        return (pet => pet.species == Species.Mouse);
         }
 
-        public IEnumerable<TItem> AllFemalePets()
+        public IEnumerable<Pet> AllFemalePets()
         {
             return _petsInTheStore.Filter(IsFemale());
         }
 
-        private static Predicate<TItem> IsFemale()
+        private static Predicate<Pet> IsFemale()
         {
 	        return pet => pet.sex == Sex.Female;
         }
 
-        public IEnumerable<TItem> AllCatsOrDogs()
+        public IEnumerable<Pet> AllCatsOrDogs()
         {
             return _petsInTheStore.Filter((pet => pet.species == Species.Cat || pet.species == Species.Dog));
         }
 
-        public IEnumerable<TItem> AllPetsButNotMice()
+        public IEnumerable<Pet> AllPetsButNotMice()
         {
             return _petsInTheStore.Filter((pet => pet.species != Species.Mouse));
         }
 
-        public IEnumerable<TItem> AllPetsBornAfter2010()
+        public IEnumerable<Pet> AllPetsBornAfter2010()
         {
 	        return _petsInTheStore.Filter(IsBornAfter(2010));
         }
 
-        private static Predicate<TItem> IsBornAfter(int year)
+        private static Predicate<Pet> IsBornAfter(int year)
         {
 	        return pet => pet.yearOfBirth > year;
         }
 
-        public IEnumerable<TItem> AllDogsBornAfter2010()
+        public IEnumerable<Pet> AllDogsBornAfter2010()
         {
             return _petsInTheStore.Filter((pet => pet.species == Species.Dog && pet.yearOfBirth > 2010));
         }
 
-        public IEnumerable<TItem> AllMaleDogs()
+        public IEnumerable<Pet> AllMaleDogs()
         {
             return _petsInTheStore.Filter((pet => pet.species == Species.Dog && pet.sex == Sex.Male));
         }
 
-        public IEnumerable<TItem> AllPetsBornAfter2011OrRabbits()
+        public IEnumerable<Pet> AllPetsBornAfter2011OrRabbits()
         {
             return _petsInTheStore.Filter((pet => pet.species == Species.Rabbit || pet.yearOfBirth > 2011));
         }

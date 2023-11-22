@@ -14,13 +14,12 @@ public static class EnumUtilities
 	    }
     }
 
-    public static IEnumerable<TItem> Filter(this IList<TItem> items, Predicate<TItem> condition)
+    public static IEnumerable<TItem> Filter<TItem>(this IList<TItem> items, Predicate<TItem> condition)
     {
-	    Criteria<TItem> criteria = new AnonymousCriteria<TItem>(condition);
-		return items.FilterBy(criteria);
+	    return items.FilterBy(new AnonymousCriteria<TItem>(condition));
     }
 
-    public static IEnumerable<TItem> FilterBy(this IList<TItem> items, Criteria<TItem> criteria)
+    public static IEnumerable<TItem> FilterBy<TItem>(this IList<TItem> items, Criteria<TItem> criteria)
     {
 	    foreach (var item in items)
 	    {
@@ -30,23 +29,4 @@ public static class EnumUtilities
 		    }
 	    }
     }
-}
-
-public class AnonymousCriteria<T> : Criteria<T>
-{
-	private readonly Predicate<T> predicate;
-	public AnonymousCriteria(Predicate<T> predicate)
-	{
-		this.predicate = predicate;
-	}
-
-	public bool isSatisfiedBy(T item)
-	{
-		return predicate(item);
-	}
-}
-
-public interface Criteria<TItem>
-{
-	bool isSatisfiedBy(TItem item);
 }
