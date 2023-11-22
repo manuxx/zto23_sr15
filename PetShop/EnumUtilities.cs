@@ -12,7 +12,7 @@ public static class EnumUtilities
         }
     }
 
-    public static IEnumerable<TItem> Filter<TItem>(this IEnumerable<TItem> items, Func<TItem, bool> condition)
+    public static IEnumerable<TItem> ThatSatisfy<TItem>(this IEnumerable<TItem> items, Func<TItem, bool> condition)
     {
         foreach (var item in items)
         {
