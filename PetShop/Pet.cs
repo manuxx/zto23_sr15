@@ -10,24 +10,84 @@ namespace Training.DomainClasses
         public float price { get; set; }
         public Species species { get; set; }
 
-        public static Predicate<Pet> isSpeciesOf(Species species)
+        public static Criteria<Pet> isSpeciesOf(Species species)
         {
-            return pet => pet.species == species;
+            return new SpeciesCriteria(species);
         }
 
-        public static Predicate<Pet> isSpecificSex(Sex sex)
+        public static Criteria<Pet> isSpecificSex(Sex sex)
         {
-            return pet => pet.sex == sex;
+            return new SexCriteria(sex);
         }
 
-        public static Predicate<Pet> isNotSpeciesOf(Species species)
+        public static Criteria<Pet> isNotSpeciesOf(Species species)
         {
-            return pet => pet.species != species;
+            return new NotSpeciesOfCiteria(species);
         }
 
-        public static Predicate<Pet> isBornAfter(int year)
+        public static Criteria<Pet> isBornAfter(int year)
         {
-            return pet => pet.yearOfBirth > year;
+            return new BornAfterCriteria(year);
+        }
+
+        public class BornAfterCriteria : Criteria<Pet>
+        {
+            private int _year;
+
+            public BornAfterCriteria(int year)
+            {
+                _year = year;
+            }
+
+            public bool IsSatisfiedBy(Pet pet)
+            {
+                return pet.yearOfBirth > _year;
+            }
+        }
+
+        public class NotSpeciesOfCiteria : Criteria<Pet>
+        {
+            private Species _species;
+
+            public NotSpeciesOfCiteria(Species species)
+            {
+                _species = species;
+            }
+
+            public bool IsSatisfiedBy(Pet pet)
+            {
+                return pet.species != _species;
+            }
+        }
+
+        public class SexCriteria : Criteria<Pet>
+        {
+            private Sex _sex;
+
+            public SexCriteria(Sex sex)
+            {
+                _sex = sex;
+            }
+
+            public bool IsSatisfiedBy(Pet pet)
+            {
+                return pet.sex == _sex;
+            }
+        }
+
+        public class SpeciesCriteria : Criteria<Pet>
+        {
+            private Species _species;
+
+            public SpeciesCriteria(Species species)
+            {
+                _species = species;
+            }
+
+            public bool IsSatisfiedBy(Pet pet)
+            {
+                return pet.species == _species;
+            }
         }
     }
 }
