@@ -1,13 +1,19 @@
+using System;
 using System.Collections.Generic;
-using Training.DomainClasses;
 
-public static class EnumUtilities
+namespace Training.DomainClasses
 {
-    public static IEnumerable<TItem> OneAtATime<TItem>(this IEnumerable<TItem> items)
+    public static class EnumUtilities
     {
-        foreach (var item in items)
+        public static IEnumerable<TItem> ThatSatisfy<TItem>(this IEnumerable<TItem> items, Predicate<TItem> condition)
         {
-            yield return item;
+            foreach (var item in items)
+            {
+                if (condition(item))
+                {
+                    yield return item;
+                }
+            }
         }
     }
 }
