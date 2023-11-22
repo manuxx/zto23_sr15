@@ -30,7 +30,12 @@ namespace Training.DomainClasses
 
         public IEnumerable<Pet> AllCats()
         {
-            return Filter(pet => pet.species == Species.Cat);
+            return Filter(IsASpecies(Species.Cat));
+        }
+
+        private static Func<Pet, bool> IsASpecies(Species species)
+        {
+            return pet => pet.species == species;
         }
 
 
@@ -43,7 +48,7 @@ namespace Training.DomainClasses
 
         public IEnumerable<Pet> AllMice()
         {
-            return Filter(pet => pet.species == Species.Mouse);
+            return Filter(IsASpecies(Species.Mouse));
         }
 
         private IEnumerable<Pet> Filter(Func<Pet, bool> condition)
@@ -69,27 +74,42 @@ namespace Training.DomainClasses
 
         public IEnumerable<Pet> AllPetsButNotMice()
         {
-            return Filter(pet => pet.species != Species.Mouse);
+            return Filter(NotASpecies(Species.Mouse));
+        }
+
+        private static Func<Pet, bool> NotASpecies(Species species)
+        {
+            return pet => pet.species != species;
         }
 
         public IEnumerable<Pet> AllPetsBornAfter2010()
         {
-            return Filter(pet => pet.yearOfBirth > 2010);
+            return Filter(IsBornAfter(2010));
+        }
+
+        private static Func<Pet, bool> IsBornAfter(int year)
+        {
+            return pet => pet.yearOfBirth > year;
         }
 
         public IEnumerable<Pet> AllDogsBornAfter2010()
         {
-            return Filter(pet => pet.species == Species.Dog && pet.yearOfBirth > 2010);
+            var isASpecies = IsASpecies(Species.Dog);
+            var isBornAfter = IsBornAfter(2010);
+            return Filter(pet => isASpecies(pet) && isBornAfter(pet));
         }
 
         public IEnumerable<Pet> AllMaleDogs()
         {
-            return Filter(pet => pet.species == Species.Dog && pet.sex == Sex.Male);
+            var isASpecies = IsASpecies(Species.Dog);
+            return Filter(pet => isASpecies(pet) && pet.sex == Sex.Male);
         }
 
         public IEnumerable<Pet> AllPetsBornAfter2011OrRabbits()
         {
-            return Filter(pet => pet.species == Species.Rabbit || pet.yearOfBirth > 2011);
+            var isASpecies = IsASpecies(Species.Rabbit);
+            var isBornAfter = IsBornAfter(2011);
+            return Filter(pet => isASpecies(pet)|| isBornAfter(pet));
         }
     }
 
