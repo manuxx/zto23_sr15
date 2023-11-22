@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using Training.DomainClasses;
 
@@ -8,6 +9,17 @@ public static class EnumUtilities
         foreach (var item in items)
         {
             yield return item;
+        }
+    }
+
+    public static IEnumerable<TItem> Filter<TItem>(this IEnumerable<TItem> items, Func<TItem, bool> condition)
+    {
+        foreach (var item in items)
+        {
+            if (condition(item))
+            {
+                yield return item;
+            }
         }
     }
 }
