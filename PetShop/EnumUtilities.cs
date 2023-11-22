@@ -12,13 +12,13 @@ public static class EnumUtilities
         }
     }
 
-    public static IEnumerable<TItem> ThatsSatisfy<TItem>(this IList<TItem> petsInTheStore, Predicate<TItem> condition)
+    public static IEnumerable<TItem> ThatSatisfy<TItem>(this IEnumerable<TItem> items, Predicate<TItem> condition)
     {
-        foreach (var pet in petsInTheStore)
+        foreach (var item in items)
         {
-            if (condition(pet))
+            if (condition(item))
             {
-                yield return pet;
+                yield return item;
             }
         }
     }

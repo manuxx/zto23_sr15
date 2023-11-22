@@ -28,11 +28,7 @@ namespace Training.DomainClasses
             _petsInTheStore.Add(newPet);
         }
 
-        public IEnumerable<Pet> AllCats()
-        {
-            return _petsInTheStore.ThatsSatisfy(pet => pet.species == Species.Cat);
-        }
-
+ 
         public IEnumerable<Pet> AllPetsSortedByName()
         {
             var ret = new List<Pet>(_petsInTheStore);
@@ -42,56 +38,68 @@ namespace Training.DomainClasses
 
         public IEnumerable<Pet> AllMice()
         {
-            return _petsInTheStore.ThatsSatisfy(pet => pet.species == Species.Mouse);
+            return _petsInTheStore.ThatSatisfy((IsASpeciesOf(Species.Mouse)));
         }
 
         public IEnumerable<Pet> AllFemalePets()
         {
-            return _petsInTheStore.ThatsSatisfy(pet => pet.sex == Sex.Female);
+            return _petsInTheStore.ThatSatisfy(IsFemale());
+        }
+
+        private static Predicate<Pet> IsFemale()
+        {
+            return pet => pet.sex == Sex.Female;
         }
 
         public IEnumerable<Pet> AllCatsOrDogs()
         {
-            return _petsInTheStore.ThatsSatisfy(IsNotSpeciesOf(Species.Cat));
+            return _petsInTheStore.ThatSatisfy((pet => pet.species == Species.Cat || pet.species == Species.Dog));
         }
 
         public IEnumerable<Pet> AllPetsButNotMice()
         {
-            return _petsInTheStore.ThatsSatisfy(IsNotSpeciesOf(Species.Mouse));
-        }
-        private static Predicate<Pet> IsSpeciesOf(Species s)
-        {
-            return pet => pet.species == s;
+            return _petsInTheStore.ThatSatisfy(IsNotASpeciesOf(Species.Mouse));
         }
 
-        private static Predicate<Pet> IsNotSpeciesOf(Species s)
+        private static Predicate<Pet> IsNotASpeciesOf(Species species)
         {
-            return pet => pet.species != s;
+            return (pet => pet.species != species);
         }
+
+        public IEnumerable<Pet> AllCats()
+        {
+            return _petsInTheStore.ThatSatisfy(IsASpeciesOf(Species.Cat));
+        }
+
+        private static Predicate<Pet> IsASpeciesOf(Species species)
+        {
+            return pet => pet.species == species;
+        }
+
 
         public IEnumerable<Pet> AllPetsBornAfter2010()
         {
-            return _petsInTheStore.ThatsSatisfy(IsBornAfter(2010));
+            return _petsInTheStore.ThatSatisfy(IsBorAfter(2010));
         }
 
-        private static Predicate<Pet> IsBornAfter(int yearOfBirth)
+        private static Predicate<Pet> IsBorAfter(int year)
         {
-            return pet => yearOfBirth > 2010;
+            return pet => pet.yearOfBirth > year;
         }
 
         public IEnumerable<Pet> AllDogsBornAfter2010()
         {
-            return _petsInTheStore.ThatsSatisfy(pet => pet.species == Species.Dog && pet.yearOfBirth > 2010);
+            return _petsInTheStore.ThatSatisfy((pet => pet.species == Species.Dog && pet.yearOfBirth > 2010));
         }
 
         public IEnumerable<Pet> AllMaleDogs()
         {
-            return _petsInTheStore.ThatsSatisfy(pet => pet.species == Species.Dog && pet.sex == Sex.Male);
+            return _petsInTheStore.ThatSatisfy((pet => pet.species == Species.Dog && pet.sex == Sex.Male));
         }
 
         public IEnumerable<Pet> AllPetsBornAfter2011OrRabbits()
         {
-            return _petsInTheStore.ThatsSatisfy(pet => pet.species == Species.Rabbit || pet.yearOfBirth > 2011);
+            return _petsInTheStore.ThatSatisfy((pet => pet.species == Species.Rabbit || pet.yearOfBirth > 2011));
         }
     }
 
