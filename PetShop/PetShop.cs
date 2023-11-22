@@ -43,38 +43,32 @@ namespace Training.DomainClasses
 
         public IEnumerable<Pet> AllMice()
         {
-            return Filter(pet => pet.species == Species.Mouse);
+            return _petsInTheStore.ThatSatisfy((Pet.IsASpeciesOf(Species.Mouse)));
         }
 
         private IEnumerable<Pet> Filter(Func<Pet, bool> condition)
         {
-            foreach (var pet in _petsInTheStore)
-            {
-                if (condition(pet))
-                {
-                    yield return pet;
-                }
-            }
-        }
-
-        public IEnumerable<Pet> AllFemalePets()
-        {
-            return Filter(pet => pet.sex == Sex.Female);
+            return _petsInTheStore.ThatSatisfy(Pet.IsFemale());
         }
 
         public IEnumerable<Pet> AllCatsOrDogs()
         {
-            return Filter(pet => pet.species == Species.Cat || pet.species == Species.Dog);
+            return _petsInTheStore.ThatSatisfy((pet => pet.species == Species.Cat || pet.species == Species.Dog));
         }
 
         public IEnumerable<Pet> AllPetsButNotMice()
         {
-            return Filter(pet => pet.species != Species.Mouse);
+            return _petsInTheStore.ThatSatisfy(Pet.IsNotASpeciesOf(Species.Mouse));
+        }
+
+        public IEnumerable<Pet> AllCatsOrDogs()
+        {
+            return _petsInTheStore.ThatSatisfy(Pet.IsASpeciesOf(Species.Cat));
         }
 
         public IEnumerable<Pet> AllPetsBornAfter2010()
         {
-            return Filter(pet => pet.yearOfBirth > 2010);
+            return _petsInTheStore.ThatSatisfy(Pet.IsBorAfter(2010));
         }
 
         public IEnumerable<Pet> AllDogsBornAfter2010()
