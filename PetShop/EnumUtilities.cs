@@ -1,10 +1,6 @@
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Diagnostics;
-using System.Runtime.CompilerServices;
 using Training.DomainClasses;
-using static EnumUtilities;
 
 public static class EnumUtilities
 {
@@ -18,10 +14,8 @@ public static class EnumUtilities
 
     public static IEnumerable<TItem> ThatSatisfy<TItem>(this IEnumerable<TItem> items, Predicate<TItem> condition)
     {
-        Criteria<TItem> adapter = new AnonymousCriteria<TItem>(condition);
-        return items.ThatSatisfy(adapter);
+        return items.ThatSatisfy(new AnonymousCriteria<TItem>(condition));
     }
-
     public static IEnumerable<TItem> ThatSatisfy<TItem>(this IEnumerable<TItem> items, Criteria<TItem> criteria)
     {
         foreach (var item in items)
@@ -31,24 +25,5 @@ public static class EnumUtilities
                 yield return item;
             }
         }
-    }
-
-    public interface Criteria<T>
-    {
-        public bool IsSatisfiedBy(T item);
-    }
-}
-
-public class AnonymousCriteria<T> : Criteria<T>
-{
-    private Predicate<T> _condition;
-    public AnonymousCriteria(Predicate<T> condition)
-    {
-        _condition = condition;
-    }
-
-    public bool IsSatisfiedBy(T item)
-    {
-        return _condition(item);
     }
 }
