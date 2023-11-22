@@ -20,14 +20,29 @@ namespace Training.DomainClasses
             return (pet => pet.species != species);
         }
 
-        public static Predicate<Pet> IsASpeciesOf(Species species)
+        public static Criteria<Pet> IsASpeciesOf(Species species)
         {
-            return pet => pet.species == species;
+            return new SpeciesCriteria(species);
         }
 
-        public static Predicate<Pet> IsBorAfter(int year)
+        public static Predicate<Pet> IsBornAfter(int year)
         {
             return pet => pet.yearOfBirth > year;
+        }
+    }
+
+    public class SpeciesCriteria : Criteria<Pet>
+    {
+        private readonly Species _species;
+
+        public SpeciesCriteria(Species species)
+        {
+            _species = species;
+        }
+
+        public bool IsSatisfiedBy(Pet pet)
+        {
+            return pet.species == _species;
         }
     }
 }
