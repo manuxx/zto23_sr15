@@ -38,17 +38,12 @@ namespace Training.DomainClasses
 
         public IEnumerable<Pet> AllMice()
         {
-            return _petsInTheStore.ThatSatisfy((IsASpeciesOf(Species.Mouse)));
+            return _petsInTheStore.ThatSatisfy((Pet.IsASpeciesOf(Species.Mouse)));
         }
 
         public IEnumerable<Pet> AllFemalePets()
         {
-            return _petsInTheStore.ThatSatisfy(IsFemale());
-        }
-
-        private static Predicate<Pet> IsFemale()
-        {
-            return pet => pet.sex == Sex.Female;
+            return _petsInTheStore.ThatSatisfy(Pet.IsFemale());
         }
 
         public IEnumerable<Pet> AllCatsOrDogs()
@@ -58,33 +53,18 @@ namespace Training.DomainClasses
 
         public IEnumerable<Pet> AllPetsButNotMice()
         {
-            return _petsInTheStore.ThatSatisfy(IsNotASpeciesOf(Species.Mouse));
-        }
-
-        private static Predicate<Pet> IsNotASpeciesOf(Species species)
-        {
-            return (pet => pet.species != species);
+            return _petsInTheStore.ThatSatisfy(Pet.IsNotASpeciesOf(Species.Mouse));
         }
 
         public IEnumerable<Pet> AllCats()
         {
-            return _petsInTheStore.ThatSatisfy(IsASpeciesOf(Species.Cat));
-        }
-
-        private static Predicate<Pet> IsASpeciesOf(Species species)
-        {
-            return pet => pet.species == species;
+            return _petsInTheStore.ThatSatisfy(Pet.IsASpeciesOf(Species.Cat));
         }
 
 
         public IEnumerable<Pet> AllPetsBornAfter2010()
         {
-            return _petsInTheStore.ThatSatisfy(IsBorAfter(2010));
-        }
-
-        private static Predicate<Pet> IsBorAfter(int year)
-        {
-            return pet => pet.yearOfBirth > year;
+            return _petsInTheStore.ThatSatisfy(Pet.IsBornAfter(2010));
         }
 
         public IEnumerable<Pet> AllDogsBornAfter2010()
