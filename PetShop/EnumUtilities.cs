@@ -14,7 +14,8 @@ public static class EnumUtilities
 
     public static IEnumerable<TItem> ThatSatisfy<TItem>(this IEnumerable<TItem> items, Predicate<TItem> condition)
     {
-        return items.ThatSatisfy(new AnonymousCriteria<TItem>(condition));
+        Criteria<TItem> adapter = new AnonymousCriteria<TItem>(condition);
+        return items.ThatSatisfy(adapter);
     }
     public static IEnumerable<TItem> ThatSatisfy<TItem>(this IEnumerable<TItem> items, Criteria<TItem> criteria)
     {
