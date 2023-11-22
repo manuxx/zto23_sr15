@@ -10,7 +10,7 @@ namespace Training.DomainClasses
         public float price { get; set; }
         public Species species { get; set; }
 
-        public static Predicate<Pet> IsSpeciesOf(Species species)
+        public static Predicate<Pet> IsASpeciesOf(Species species)
         {
             return pet => pet.species == species;
         }
