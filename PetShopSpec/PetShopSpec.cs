@@ -2,7 +2,9 @@
 using System.Collections.Generic;
 using Training.DomainClasses;
 using Machine.Specifications;
+using Microsoft.VisualStudio.TestPlatform.ObjectModel;
 using It = Machine.Specifications.It;
+using Newtonsoft.Json.Linq;
 
 namespace Training.Specificaton
 {
@@ -217,7 +219,8 @@ namespace Training.Specificaton
         };
         private It should_be_able_to_find_all_female_pets = () =>
         {
-            var foundPets = subject.AllFemalePets();
+            var criteria = Where<Pet>.HasAn(p => p.sex).EqualTo(Sex.Female);
+            var foundPets = subject.AllPets().ThatSatisfy(criteria);
             foundPets.ShouldContainOnly(dog_Lassie, mouse_Dixie);
         };
         private It should_be_able_to_find_all_cats_or_dogs = () =>
@@ -251,6 +254,29 @@ namespace Training.Specificaton
             foundPets.ShouldContainOnly(mouse_Jerry, rabbit_Fluffy);
         };
 
+    }
+
+    internal class Where<TItem>
+    {
+        public static CriteriaBuilder<TItem,TProperty> HasAn<TProperty>(Func<TItem, TProperty> propertySelector)
+        {
+            return new CriteriaBuilder<TItem,TProperty>(propertySelector);
+        }
+    }
+
+    internal class CriteriaBuilder<TItem,TProperty>
+    {
+        private readonly Func<TItem, TProperty> _propertySelector;
+
+        public CriteriaBuilder(Func<TItem, TProperty> propertySelector)
+        {
+            _propertySelector = propertySelector;
+        }
+
+        public Criteria<TItem> EqualTo(TProperty value)
+        {
+            return new AnonymousCriteria<TItem>(i=>_propertySelector(i).Equals(value));
+        }
     }
 
     class when_sorting_pets : concern_with_pets_for_sorting_and_filtering
