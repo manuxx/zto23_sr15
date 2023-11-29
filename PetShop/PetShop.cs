@@ -47,12 +47,12 @@ namespace Training.DomainClasses
 
         public IEnumerable<Pet> AllCatsOrDogs()
         {
-            return _petsInTheStore.ThatSatisfy((pet => pet.species == Species.Cat || pet.species == Species.Dog));
+            return _petsInTheStore.ThatSatisfy(Pet.IsASpeciesOf(Species.Cat).Or(Pet.IsASpeciesOf(Species.Dog)));
         }
 
         public IEnumerable<Pet> AllPetsButNotMice()
         {
-            return _petsInTheStore.ThatSatisfy(Pet.IsNotASpeciesOf(Species.Mouse));
+            return _petsInTheStore.ThatSatisfy(new Negation<Pet>(Pet.IsASpeciesOf(Species.Mouse)));
         }
 
         public IEnumerable<Pet> AllCats()
@@ -68,17 +68,66 @@ namespace Training.DomainClasses
 
         public IEnumerable<Pet> AllDogsBornAfter2010()
         {
-            return _petsInTheStore.ThatSatisfy((pet => pet.species == Species.Dog && pet.yearOfBirth > 2010));
+            return _petsInTheStore.ThatSatisfy(Pet.IsASpeciesOf(Species.Dog).And(Pet.IsBornAfter(2010)));
         }
 
         public IEnumerable<Pet> AllMaleDogs()
         {
-            return _petsInTheStore.ThatSatisfy((pet => pet.species == Species.Dog && pet.sex == Sex.Male));
+            return _petsInTheStore.ThatSatisfy(Pet.IsMale().And(Pet.IsASpeciesOf(Species.Dog)));
         }
 
         public IEnumerable<Pet> AllPetsBornAfter2011OrRabbits()
         {
-            return _petsInTheStore.ThatSatisfy((pet => pet.species == Species.Rabbit || pet.yearOfBirth > 2011));
+            return _petsInTheStore.ThatSatisfy(Pet.IsBornAfter(2011).Or(Pet.IsASpeciesOf(Species.Rabbit)));
+        }
+    }
+
+    public class Conjunction<T> : Criteria<T>
+    {
+        private Criteria<T> _conjuntion1;
+        private Criteria<T> _conjuntion2;
+
+        public Conjunction(Criteria<T> predicate1, Criteria<T> predicate2)
+        {
+            _conjuntion1 = predicate1;
+            _conjuntion2 = predicate2;
+        }
+
+        public bool IsSatisfiedBy(T item)
+        {
+            return _conjuntion1.IsSatisfiedBy(item) && _conjuntion2.IsSatisfiedBy(item);
+        }
+    }
+
+    public class Alternative<T> : Criteria<T>
+    {
+        private Criteria<T> _alternative1;
+        private Criteria<T> _alternative2;
+
+        public Alternative(Criteria<T> predicate1, Criteria<T> predicate2)
+        {
+            _alternative1 = predicate1;
+            _alternative2 = predicate2;
+        }
+
+        public bool IsSatisfiedBy(T item)
+        {
+            return _alternative1.IsSatisfiedBy(item) || _alternative2.IsSatisfiedBy(item);
+        }
+    }
+
+    public class Negation<T> : Criteria<T>
+    {
+        private Criteria<T> _negation;
+
+        public Negation(Criteria<T> negation)
+        {
+            _negation = negation;
+        }
+
+        public bool IsSatisfiedBy(T item)
+        {
+            return !_negation.IsSatisfiedBy(item);
         }
     }
 }
