@@ -2,7 +2,7 @@ using System;
 
 namespace Training.DomainClasses
 {
-    public class Pet 
+    public class Pet
     {
         public Sex sex;
         public string name { get; set; }
@@ -15,9 +15,9 @@ namespace Training.DomainClasses
             return new SexCriteria(Sex.Female);
         }
 
-        public static Predicate<Pet> IsNotASpeciesOf(Species species)
+        public static Criteria<Pet> IsNotASpeciesOf(Species species)
         {
-            return (pet => pet.species != species);
+            return new Negation(Pet.IsASpeciesOf(species));
         }
 
         public static Criteria<Pet> IsASpeciesOf(Species species)
@@ -29,6 +29,7 @@ namespace Training.DomainClasses
         {
             return new BornAfterCriteria(year);
         }
+
         public class SexCriteria : Criteria<Pet>
         {
             private readonly Sex _sex;
@@ -75,5 +76,18 @@ namespace Training.DomainClasses
         }
     }
 
-    
+    public class Negation : Criteria<Pet>
+    {
+        private readonly Criteria<Pet> _criteria;
+
+        public Negation(Criteria<Pet> criteria)
+        {
+            _criteria = criteria;
+        }
+
+        public bool IsSatisfiedBy(Pet item)
+        {
+            return !_criteria.IsSatisfiedBy(item);
+        }
+    }
 }
