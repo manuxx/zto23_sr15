@@ -211,7 +211,9 @@ namespace Training.Specificaton
         };
         private It should_be_able_to_find_all_mice = () =>
         {
-            var foundPets = subject.AllMice();
+            // Criteria<Pet> criteria = Where<Pet>.HasAn(p => p.species).EqualTo(Species.Mouse);
+            Criteria<Pet> criteria = Where.HasAn(p => p.species).EqualTo(Species.Mouse);
+            IEnumerable<Pet> foundPets = subject.AllPets().ThatSatisfy(criteria);
             foundPets.ShouldContainOnly(mouse_Dixie, mouse_Jerry);
         };
         private It should_be_able_to_find_all_female_pets = () =>
