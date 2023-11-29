@@ -68,7 +68,7 @@ namespace Training.DomainClasses
 
         public IEnumerable<Pet> AllDogsBornAfter2010()
         {
-            return _petsInTheStore.ThatSatisfy((pet => pet.species == Species.Dog && pet.yearOfBirth > 2010));
+            return _petsInTheStore.ThatSatisfy(new Conjuction<Pet>(Pet.IsASpeciesOf(Species.Dog), Pet.IsBornAfter(2010)));
         }
 
         public IEnumerable<Pet> AllMaleDogs()
@@ -78,7 +78,43 @@ namespace Training.DomainClasses
 
         public IEnumerable<Pet> AllPetsBornAfter2011OrRabbits()
         {
-            return _petsInTheStore.ThatSatisfy((pet => pet.species == Species.Rabbit || pet.yearOfBirth > 2011));
+            return _petsInTheStore.ThatSatisfy(new Alternative(Pet.IsASpeciesOf(Species.Rabbit), Pet.IsBornAfter(2011)));
+        }
+    }
+
+    public class Alternative : Criteria<Pet>
+    {
+        private readonly Criteria<Pet> _isASpeciesOf;
+        private readonly Criteria<Pet> _isBornAfter;
+
+        public Alternative(Criteria<Pet> isASpeciesOf, Criteria<Pet> isBornAfter)
+        {
+            _isASpeciesOf= isASpeciesOf;
+            _isBornAfter = isBornAfter;
+        }
+
+        public bool IsSatisfiedBy(Pet pet)
+        {
+            return _isASpeciesOf.IsSatisfiedBy(pet) || _isBornAfter.IsSatisfiedBy(pet);
+        }
+
+    }
+
+    public class Conjuction<T> : Criteria<Pet>
+    {
+        private readonly Criteria<Pet> _isASpeciesOf;
+        private readonly Criteria<Pet> _isBornAfter;
+
+        // create constrcutor to get multiple parameters
+        public Conjuction(Criteria<Pet> isASpeciesOf, Criteria<Pet> isBornAfter)
+        {
+            _isASpeciesOf = isASpeciesOf;
+            _isBornAfter = isBornAfter;
+        }
+
+        public bool IsSatisfiedBy(Pet pet)
+        {
+            return _isASpeciesOf.IsSatisfiedBy(pet) && _isBornAfter.IsSatisfiedBy(pet);
         }
     }
 }
