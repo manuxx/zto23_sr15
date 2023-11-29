@@ -9,7 +9,7 @@ public class AnonymousCriteria<T> : Criteria<T>
         _condition = condition;
     }
 
-    public override bool IsSatisfiedBy(T item)
+    public bool IsSatisfiedBy(T item)
     {
         return _condition(item);
     }
