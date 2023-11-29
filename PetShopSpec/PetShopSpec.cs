@@ -236,7 +236,7 @@ namespace Training.Specificaton
         };
         private It should_be_able_to_find_all_pets_born_after_2010 = () =>
         {
-            var criteria = Where<Pet>.HasComparable(p => p.yearOfBirth).GreaterThan(2010);
+            var criteria = Where<Pet>.HasAn(p => p.yearOfBirth).GreaterThan(2010);
             var foundPets = subject.AllPets().ThatSatisfy(criteria);
             foundPets.ShouldContainOnly(dog_Pluto, rabbit_Fluffy, mouse_Dixie, mouse_Jerry);
         };
@@ -264,15 +264,12 @@ namespace Training.Specificaton
         {
             return new CriteriaBuilder<TItem,TProperty>(propertySelector);
         }
-        public static ComparableCriteriaBuilder<TItem, TProperty> HasComparable<TProperty>(Func<TItem, TProperty> propertySelector)
-            where TProperty : IComparable<TProperty>
-        {
-            return new ComparableCriteriaBuilder<TItem, TProperty>(propertySelector);
-        }
+ 
     }
 
-    internal class CriteriaBuilder<TItem,TProperty>
-    {
+
+
+    internal class CriteriaBuilder<TItem, TProperty> {
         private readonly Func<TItem, TProperty> _propertySelector;
 
         public CriteriaBuilder(Func<TItem, TProperty> propertySelector)
@@ -282,28 +279,12 @@ namespace Training.Specificaton
 
         public Criteria<TItem> EqualTo(TProperty value)
         {
-            return new AnonymousCriteria<TItem>(i=>_propertySelector(i).Equals(value));
-        }
-
-    }
-
-    internal class ComparableCriteriaBuilder<TItem, TProperty> where TProperty : IComparable<TProperty>
-    {
-        private readonly Func<TItem, TProperty> _propertySelector;
-
-        public ComparableCriteriaBuilder(Func<TItem, TProperty> propertySelector)
-        {
-            _propertySelector = propertySelector;
-        }
-
-        public Criteria<TItem> EqualTo(TProperty value)
-        {
             return new AnonymousCriteria<TItem>(i => _propertySelector(i).Equals(value));
         }
 
-        public Criteria<TItem> GreaterThan(TProperty v)
+        public Criteria<TItem> GreaterThan(IComparable<TProperty> v)
         {
-            return new AnonymousCriteria<TItem>(i => _propertySelector(i).CompareTo(v) > 0);
+            return new AnonymousCriteria<TItem>(i => v.CompareTo(_propertySelector(i)) < 0);
         }
     }
     class when_sorting_pets : concern_with_pets_for_sorting_and_filtering
