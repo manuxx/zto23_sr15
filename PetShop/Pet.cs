@@ -29,6 +29,12 @@ namespace Training.DomainClasses
         {
             return new BornAfterCriteria(year);
         }
+
+        internal static Criteria<Pet> IsMale()
+        {
+            throw new NotImplementedException();
+        }
+
         public class SexCriteria : Criteria<Pet>
         {
             private readonly Sex _sex;
@@ -38,7 +44,7 @@ namespace Training.DomainClasses
                 _sex = sex;
             }
 
-            public bool IsSatisfiedBy(Pet pet)
+            public override bool IsSatisfiedBy(Pet pet)
             {
                 return pet.sex == _sex;
             }
@@ -53,7 +59,7 @@ namespace Training.DomainClasses
                 _year = year;
             }
 
-            public bool IsSatisfiedBy(Pet pet)
+            public override bool IsSatisfiedBy(Pet pet)
             {
                 return pet.yearOfBirth > _year;
             }
@@ -68,7 +74,7 @@ namespace Training.DomainClasses
                 _species = species;
             }
 
-            public bool IsSatisfiedBy(Pet pet)
+            public override bool IsSatisfiedBy(Pet pet)
             {
                 return pet.species == _species;
             }
