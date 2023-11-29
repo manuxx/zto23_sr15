@@ -73,6 +73,11 @@ namespace Training.DomainClasses
                 return pet.species == _species;
             }
         }
+
+        public static Criteria<Pet> IsMale()
+        {
+            return new SexCriteria(Sex.Male);
+        }
     }
 
     public class Negation<TItem> : Criteria<TItem>

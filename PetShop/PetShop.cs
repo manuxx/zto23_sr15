@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using PetShop;
 
 namespace Training.DomainClasses
 {
@@ -74,7 +73,7 @@ namespace Training.DomainClasses
 
         public IEnumerable<Pet> AllMaleDogs()
         {
-            return _petsInTheStore.ThatSatisfy(Pet.IsASpeciesOf(Species.Dog).And(Pet.IsMale()));
+            return _petsInTheStore.ThatSatisfy(Pet.IsMale().And(Pet.IsASpeciesOf(Species.Dog)));
         }
 
         public IEnumerable<Pet> AllPetsBornAfter2011OrRabbits()
