@@ -211,7 +211,7 @@ namespace Training.Specificaton
         };
         private It should_be_able_to_find_all_mice = () =>
         {
-            Criteria<Pet> criteria = Where.HasAn(p => p.species).EqualTo(Species.Mouse);
+            Criteria<Pet> criteria = Where<Pet>.HasAn(p => p.species).EqualTo(Species.Mouse);
             IEnumerable<Pet> foundPets = subject.AllPets().ThatSatisfy(criteria);
             foundPets.ShouldContainOnly(mouse_Dixie, mouse_Jerry);
         };
@@ -253,26 +253,26 @@ namespace Training.Specificaton
 
     }
 
-    internal class Where
+    internal class Where<TItem>
     {
-        public static CriteriaBuilder HasAn(Func<Pet, Species> propertySelector)
+        public static CriteriaBuilder<TItem> HasAn(Func<TItem, Species> propertySelector)
         {
-            return new CriteriaBuilder(propertySelector);
+            return new CriteriaBuilder<TItem>(propertySelector);
         }
     }
 
-    internal class CriteriaBuilder
+    internal class CriteriaBuilder<TItem>
     {
-        private readonly Func<Pet, Species> _propertySelector;
+        private readonly Func<TItem, Species> _propertySelector;
 
-        public CriteriaBuilder(Func<Pet, Species> propertySelector)
+        public CriteriaBuilder(Func<TItem, Species> propertySelector)
         {
             _propertySelector = propertySelector;
         }
 
-        public Criteria<Pet> EqualTo(Species species)
+        public Criteria<TItem> EqualTo(Species species)
         {
-            return new AnonymousCriteria<Pet>(p => _propertySelector(p).Equals(species));
+            return new AnonymousCriteria<TItem>(p => _propertySelector(p).Equals(species));
         }
     }
 
