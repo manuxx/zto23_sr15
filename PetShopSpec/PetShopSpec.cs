@@ -6,7 +6,7 @@ using It = Machine.Specifications.It;
 
 namespace Training.Specificaton
 {
-    public abstract class pet_shop_concern : Specification<PetShop>
+    public abstract class pet_shop_concern : Specification<DomainClasses.PetShop>
     {
         Establish context = () =>
         {
@@ -100,7 +100,7 @@ namespace Training.Specificaton
         private static Pet fluffy_the_second;
     }
 
-    [Subject(typeof(PetShop))]
+    [Subject(typeof(DomainClasses.PetShop))]
     class when_trying_to_change_returned_collection_of_pets : pet_shop_concern
     {
         Establish c = () => pet_initial_content.AddManyItems(new Pet { name = "Pixie" }, new Pet { name = "Dixie" });
@@ -211,12 +211,14 @@ namespace Training.Specificaton
         };
         private It should_be_able_to_find_all_mice = () =>
         {
-            var foundPets = subject.AllMice();
+            Criteria <Pet> criteria = Where<Pet>.HasAn(p => p.species).EqualTo(Species.Mouse);
+            IEnumerable<Pet> foundPets = subject.AllPets().ThatSatisfy(criteria);
             foundPets.ShouldContainOnly(mouse_Dixie, mouse_Jerry);
         };
         private It should_be_able_to_find_all_female_pets = () =>
         {
-            var foundPets = subject.AllFemalePets();
+            var criteria = Where<Pet>.HasAn(p => p.sex).EqualTo(Sex.Female);
+            var foundPets = subject.AllPets().ThatSatisfy(criteria);
             foundPets.ShouldContainOnly(dog_Lassie, mouse_Dixie);
         };
         private It should_be_able_to_find_all_cats_or_dogs = () =>
@@ -252,6 +254,29 @@ namespace Training.Specificaton
 
     }
 
+    internal class Where<TItem>
+    {
+        internal static CriteriaBuilder<TItem, TProperty> HasAn<TProperty>(Func<TItem, TProperty> propertySelector)
+        {
+            return new CriteriaBuilder<TItem, TProperty>(propertySelector);
+        }
+    }
+
+    internal class CriteriaBuilder<TItem, TProperty>
+    {
+        private readonly Func<TItem, TProperty> _propertySelector;
+
+        public CriteriaBuilder(Func<TItem, TProperty> propertySelector)
+        {
+            _propertySelector = propertySelector;
+        }
+
+        public Criteria<TItem> EqualTo(TProperty item)
+        {
+            return new AnonymousCriteria<TItem>(i => _propertySelector(i).Equals(item));
+        }
+    }
+    
     class when_sorting_pets : concern_with_pets_for_sorting_and_filtering
     {
         It should_be_able_to_sort_by_name_ascending = () =>
