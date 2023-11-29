@@ -231,6 +231,7 @@ namespace Training.Specificaton
         };
         private It should_be_able_to_find_all_pets_but_not_mice = () =>
         {
+            var criteria = Where<Pet>.HasAn(p => p.Species).EqualTo(Sex.Female);
             var foundPets = subject.AllPetsButNotMice();
             foundPets.ShouldContainOnly(cat_Tom, cat_Jinx, dog_Huckelberry, dog_Lassie, dog_Pluto, rabbit_Fluffy);
         };
@@ -266,8 +267,6 @@ namespace Training.Specificaton
         }
  
     }
-
-
 
     internal class CriteriaBuilder<TItem, TProperty> {
         private readonly Func<TItem, TProperty> _propertySelector;
