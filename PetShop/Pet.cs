@@ -15,9 +15,14 @@ namespace Training.DomainClasses
             return new SexCriteria(Sex.Female);
         }
 
-        public static Predicate<Pet> IsNotASpeciesOf(Species species)
+        public static Criteria<Pet> IsMale()
         {
-            return (pet => pet.species != species);
+            return new SexCriteria(Sex.Male);
+        }
+
+        public static Criteria<Pet> IsNotASpeciesOf(Species species)
+        {
+            return new Negation<Pet>(Pet.IsASpeciesOf(species));
         }
 
         public static Criteria<Pet> IsASpeciesOf(Species species)
@@ -38,7 +43,7 @@ namespace Training.DomainClasses
                 _sex = sex;
             }
 
-            public bool IsSatisfiedBy(Pet pet)
+            public override bool IsSatisfiedBy(Pet pet)
             {
                 return pet.sex == _sex;
             }
@@ -53,7 +58,7 @@ namespace Training.DomainClasses
                 _year = year;
             }
 
-            public bool IsSatisfiedBy(Pet pet)
+            public override bool IsSatisfiedBy(Pet pet)
             {
                 return pet.yearOfBirth > _year;
             }
@@ -68,12 +73,24 @@ namespace Training.DomainClasses
                 _species = species;
             }
 
-            public bool IsSatisfiedBy(Pet pet)
+            public override bool IsSatisfiedBy(Pet pet)
             {
                 return pet.species == _species;
             }
         }
-    }
+        public class Negation<T> : Criteria<Pet>
+        {
+            private readonly Criteria<Pet> _isASpeciesOf;
 
-    
+            public Negation(Criteria<Pet> isASpeciesOf)
+            {
+                _isASpeciesOf = isASpeciesOf;
+            }
+
+            public override bool IsSatisfiedBy(Pet item)
+            {
+                return !_isASpeciesOf.IsSatisfiedBy(item);
+            }
+        }
+    }
 }
